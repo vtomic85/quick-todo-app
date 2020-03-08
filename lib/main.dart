@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quicktodoapp/todo_item.dart';
 
@@ -161,7 +162,19 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget generateAddTodoForm() {
     return Column(
       children: <Widget>[
-        TextField(
+        TextFormField(
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            labelText: 'Add a new TODO',
+            suffixIcon: controller.text.isNotEmpty
+                ? IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      controller.text = '';
+                    },
+                  )
+                : null,
+          ),
           autofocus: false,
           controller: controller,
           onChanged: (text) {
@@ -176,8 +189,8 @@ class _MyHomePageState extends State<MyHomePage> {
             if (controller.text != '') {
               setState(() {
                 todos.add(new TodoItem(newTodo, false));
-                controller.text = '';
               });
+              controller.text = '';
             }
           },
         ),
