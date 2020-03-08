@@ -170,7 +170,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ? IconButton(
                     icon: Icon(Icons.clear),
                     onPressed: () {
-                      controller.text = '';
+                      WidgetsBinding.instance
+                          .addPostFrameCallback((_) => controller.clear());
+                      setState(() {
+                        controller.text = '';
+                      });
                     },
                   )
                 : null,
@@ -185,14 +189,14 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         RaisedButton(
           child: Text('Add'),
-          onPressed: () {
-            if (controller.text != '') {
-              setState(() {
-                todos.add(new TodoItem(newTodo, false));
-              });
-              controller.text = '';
-            }
-          },
+          onPressed: controller.text.isNotEmpty
+              ? () {
+                  setState(() {
+                    todos.add(new TodoItem(newTodo, false));
+                  });
+                  controller.text = '';
+                }
+              : null,
         ),
       ],
     );
